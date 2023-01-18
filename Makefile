@@ -6,13 +6,13 @@
 #    By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/13 16:54:08 by ehasalu           #+#    #+#              #
-#    Updated: 2023/01/18 13:18:01 by ehasalu          ###   ########.fr        #
+#    Updated: 2023/01/19 00:45:06 by ehasalu          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =	libftprintf
 SRCS =	ft_putchar.c ft_putnbrun.c hexalow.c putmem.c ft_printf.c ft_putnbr.c \
-	ft_putstr.c hexaup.c
+	ft_putstr.c hexaup.c ft_strlen.c
 
 OBJS = $(SRCS:.c=.o)
 

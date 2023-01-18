@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/18 12:08:45 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/19 00:29:38 by ehasalu          ###   ########.fr       */
+/*   Created: 2023/01/13 16:52:17 by ehasalu           #+#    #+#             */
+/*   Updated: 2023/01/19 00:01:59 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
-#include <stdio.h>
 
-int	main(void)
+size_t	ft_strlen(const char *s)
 {
-	void	*ptr;
+	size_t	i;
 
-	ptr = NULL;
-	//ft_printf("%-10c", 'a');
-	//ft_printf("%-10s", "HELP");
-	ft_printf("%-20p", &ptr);
-//	ft_printf("%d", 513);
-//	ft_printf("%i", 612);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
