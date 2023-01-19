@@ -2,5 +2,10 @@
 
 int	main(void)
 {
-	printf("%+d", 521);
+	char	*aaa;
+
+	aaa = "";
+	printf("%5s", aaa);
+	printf("%3.s", aaa);
+	printf("%.3s", aaa);
 }

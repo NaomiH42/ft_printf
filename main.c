@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:08:45 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/19 00:29:38 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/19 20:27:08 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,6 @@
 
 int	main(void)
 {
-	void	*ptr;
-
-	ptr = NULL;
-	//ft_printf("%-10c", 'a');
-	//ft_printf("%-10s", "HELP");
-	ft_printf("%-20p", &ptr);
-//	ft_printf("%d", 513);
-//	ft_printf("%i", 612);
+	ft_printf("%10.s", NULL);	
+	
 }

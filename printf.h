@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:50:49 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/19 00:20:31 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/19 18:58:59 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,19 @@
 # include <stdlib.h>
 # include <stdarg.h>
 
-void	ft_putchar(char c, char *flags, int test);
-void	ft_putstr(char *s, char *flags, int test);
+size_t	put_space(size_t n);
+size_t	ft_putchar(char c, char *flags, int test);
+size_t	ft_putstr(char *s, char *flags, int test);
 void	ft_putnbr(int n, char *flags);
 void	ft_putnbrun(unsigned int n, char *flags);
 void	hexalow(int nbr, char *flags);
 void	hexaup(int nbr, char *flags);
-void	putmem(void *ptr, char *flags);
+size_t	putmem(void *ptr, char *flags);
 int	ft_printf(const char *s, ...);
 size_t	ft_strlen(const char *s);
+size_t	perc(void);
+size_t	dot(char *flags);
+size_t	minus(char *flags);
+size_t	space(char *flags);
 
 #endif

@@ -6,51 +6,93 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:51:29 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/19 00:20:15 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/19 20:39:44 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-void	ft_putstr(char *s, char *flags, int test)
+#include <stdio.h>
+
+
+int	middle(char *flags)
 {
 	size_t	i;
-	int	spaces;
-	int	flag;
-	char	space;
+	int	dotcheck;
 
-	flag = 0;
-	spaces = 0;
+	dotcheck = 0;
 	i = 0;
-	space = ' ';
-	while (flags[i] && test)
+	while (flags[i])
 	{
-		if (flags[i] >= '0' && flags[i] <= '9')
-			spaces = (spaces * 10) + flags[i] - '0';
+		if (flags[i] == '.')
+			dotcheck = 1;
 		i++;
 	}
-	spaces = spaces - ft_strlen(s);
-	i = 0;
-	if (flags[i] == '-' && test)
+	if (dotcheck && dot(flags) == 0)
+		return (1);
+	else
+		return (0);
+}
+
+void	nul(char *flags)
+{
+	if (middle(flags))
+			ft_putstr("", flags, 1);
+	else if (dot(flags) > 0 && dot(flags) < 6)
+		ft_putstr("", flags, 1);
+	else
+		ft_putstr("(null)", flags, 1);
+}
+
+size_t	putstr_space(char *flags)
+{
+	int	spaces;
+	int	spaces2;
+	
+	spaces = space(flags);
+	spaces2 = minus(flags);
+	if (spaces > 0)
 	{
-		while (*s)
-		{
-			write(1, &(*s), 1);
-			s++;
-		}
-		flag = 1;
+		put_space(spaces);
+		return (spaces);
 	}
-	while (spaces > 0 && test)
+	else
 	{
-		write(1, &space, 1);
-		spaces--;
+		put_space(spaces2);
+		return (spaces);
 	}
-	if (flag == 0 || test)
+}
+
+size_t	ft_putstr(char *s, char *flags, int test)
+{
+	size_t	ret;
+	int	before;
+	int	after;
+	int	length;
+
+	ret = 0;
+	if (!s)
+		nul(flags);
+	else if (middle(flags) && test)
+		return (putstr_space(flags));	
+	else
 	{
-		while (*s)
-		{
-			write(1, &(*s), 1);
-			s++;
-		}
+	if (dot(flags) < ft_strlen(s) && dot(flags) > 0)
+		length = dot(flags);
+	else
+		length = ft_strlen(s);
+	before = space(flags) - length;
+	after = minus(flags) - length;
+	if (before > 0 && test)
+		put_space(before);
+	while (*s && (length > 0 || !test))
+	{
+		write(1, &(*s), 1);
+		s++;
+		length--;
 	}
+	if(after > 0 && test)
+		put_space(after);
+	}
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:49:59 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/19 00:28:06 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/19 18:22:31 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,17 @@
 #include <stdio.h>
 #include <unistd.h>
 
-static void	check_per(char c,  va_list args, char *flags)
+static size_t	check_per(char c,  va_list args, char *flags)
 {
+	size_t	len;
+
+	len = 0;
 	if (c == 'c')
-		ft_putchar(va_arg(args, int), flags, 1);
+		len = ft_putchar(va_arg(args, int), flags, 1);
 	if (c == 's')
-		ft_putstr(va_arg(args, char*), flags, 1);
+		len = ft_putstr(va_arg(args, char*), flags, 1);
 	if (c == 'p')
-		putmem(va_arg(args, void*), flags);
+		len = putmem(va_arg(args, void*), flags);
 	if (c == 'd' || c == 'i')
 		ft_putnbr(va_arg(args, int), flags);
 	if (c == 'u')
@@ -31,7 +34,8 @@ static void	check_per(char c,  va_list args, char *flags)
 	if (c == 'X')
 		hexaup(va_arg(args, int), flags);	
 	if (c == '%')
-		ft_putchar('%', flags, 1);
+		len = perc();
+	return (len);
 }
 
 static size_t	flag_mal(const char *s, size_t i)
@@ -54,7 +58,9 @@ int	ft_printf(const char *s, ...)
 	char	*flags;
 	int	len;
 	size_t	l;
+	size_t	total;
 
+	total = 0;
 	i = 0;
 	len = 0;
 	va_start(args, s);
@@ -75,7 +81,7 @@ int	ft_printf(const char *s, ...)
 				i++;
 			}
 			flags[l] = '\0';
-			check_per(s[i], args, flags);
+			total += check_per(s[i], args, flags);
 			i++;
 			free(flags);
 		}
@@ -83,8 +89,9 @@ int	ft_printf(const char *s, ...)
 		{
 			ft_putchar(s[i], flags, 0);
 			i++;
+			total++;
 		}
 	}
 	va_end(args);
-	return (1);
+	return (total);
 }

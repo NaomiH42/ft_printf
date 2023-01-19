@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:01:56 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/19 00:29:48 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/19 17:16:47 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,15 @@ static void	show_adr(void *ptr, char *flags)
 }
 #include <stdio.h>
 
-void	putmem(void *ptr, char *flags)
+size_t	putmem(void *ptr, char *flags)
 {
 	int	flag;
 	int	spaces;
 	int	i;
 	char	space;
+	size_t	ret;
 
+	ret = 0;
 	flag = 0;
 	spaces = 0;
 	i = 0;
@@ -67,6 +69,15 @@ void	putmem(void *ptr, char *flags)
 		spaces -= 5;
 	else
 		spaces -= 14;
+	if (spaces > 0)
+		ret = spaces;
+	else
+	{
+		if (!ptr)
+			ret = 5;
+		else
+			ret = 14;
+	}
 	if (flags[0] == '-')
 	{
 		show_adr(ptr, flags);
@@ -79,4 +90,5 @@ void	putmem(void *ptr, char *flags)
 	}
 	if (flag == 0)
 		show_adr(ptr, flags);
+	return (ret);
 }
