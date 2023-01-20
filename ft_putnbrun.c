@@ -6,11 +6,11 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:56:35 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/20 15:59:20 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/20 20:45:19 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
 void	prnumun(unsigned int n, char *flags)
 {
@@ -33,8 +33,8 @@ int	numlenun(unsigned int n)
 	int	len;
 
 	len = 0;
-	if (n < 0)
-		len++;
+	if (n == 0)
+		return (1);
 	while (n != 0)
 	{
 		len++;
@@ -54,19 +54,14 @@ size_t	ft_putnbrun(unsigned int n, char *flags)
 	after = minus(flags) - numlenun(n);
 	before = space(flags) - numlenun(n);
 	dots = dot(flags) - numlenun(n);
-	if (is_in('+', flags) && n >= 0)
+	if (is_in('+', flags))
 		ret +=	ft_putchar('+', flags, 0);
-	else if (is_in(' ', flags) && n >= 0)
+	else if (is_in(' ', flags))
 		ret +=ft_putchar(' ', flags, 0);
 	else if (before > 0)
 		ret += put_space(before);
 	else if (is_in('.', flags) && dots > 0)
 	{
-		if (n < 0)
-		{
-			ft_putchar('-', flags, 0);
-			n = n * -1;
-		}
 		ret += put_zero(dots);
 	}
 	prnumun(n, flags);

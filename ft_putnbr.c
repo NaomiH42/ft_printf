@@ -6,11 +6,11 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:51:23 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/20 16:00:46 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/20 22:10:53 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
 void	prnum(int n, char *flags)
 {
@@ -44,6 +44,8 @@ int	numlen(int n)
 	int	len;
 
 	len = 0;
+	if (n == 0)
+		return (1);
 	if (n < 0)
 		len++;
 	while (n != 0)
@@ -53,6 +55,7 @@ int	numlen(int n)
 	}
 	return (len);
 }
+#include <stdio.h>
 
 size_t	ft_putnbr(int n, char *flags)
 {
@@ -60,28 +63,70 @@ size_t	ft_putnbr(int n, char *flags)
 	int	before;
 	int	dots;
 	int	ret;
+	int	zeros;
 
 	ret = numlen(n);
 	after = minus(flags) - numlen(n);
 	before = space(flags) - numlen(n);
 	dots = dot(flags) - numlen(n);
-	if (is_in('+', flags) && n >= 0)
+	zeros = zero(flags) - numlen(n);
+
+	if (is_in('.', flags) && n == 0 && dots < 0)
+	{
+		ret = ft_putstr("", flags, 1);
+		return (ret);
+	}	
+	if (before > 0)
+	{
+		if (n < 0 && dots > 0)
+			before--;
+		if (dots > 0)
+			before -= dots;
+		zeros -= before;
+		ret += put_space(before);
+	}
+	if (flags[0] == '0' && zeros > 0)
+	{
+		if(n < 0)
+		{
+			ft_putchar('-', flags, 0);
+			n *= -1;
+		}
+		dots = 0;
+		ret += put_zero(zeros);
+	}
+	else if (is_in('+', flags) && n >= 0)
 		ret += ft_putchar('+', flags, 0);
 	else if (is_in(' ', flags) && n >= 0)
 		ret += ft_putchar(' ', flags, 0);
-	else if (before > 0)
-		ret += put_space(before);
-	else if (is_in('.', flags) && dots > 0)
+//	else if (before > 0)
+//	{
+//		if (n < 0 && dots > 0)
+//			before--;
+//		if (dots > 0)
+//			before -= dots;
+//		ret += put_space(before);
+//	}
+	if (is_in('.', flags) && dots > 0)
 	{
 		if (n < 0)
 		{
 			ft_putchar('-', flags, 0);
 			n = n * -1;
+			ret += put_zero(dots + 1);
+			dots++;
 		}
-		ret += put_zero(dots);
+		else
+			ret += put_zero(dots);
 	}
 	prnum(n, flags);
-	if (!is_in('+', flags) && !is_in(' ', flags) && !is_in('.', flags) && after > 0)
+	if (!is_in('+', flags) && !is_in(' ', flags) && after > 0)
+	{
+		if (n < 0 && dots > 0)
+			after--;
+		if (dots > 0)
+			after -= dots;
 		ret += put_space(after);
+	}
 	return (ret);
 }

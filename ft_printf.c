@@ -6,11 +6,11 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:49:59 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/20 15:58:35 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/20 21:09:25 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 #include <stdio.h>
 #include <unistd.h>
 
@@ -24,15 +24,15 @@ static size_t	check_per(char c,  va_list args, char *flags)
 	if (c == 's')
 		len = ft_putstr(va_arg(args, char*), flags, 1);
 	if (c == 'p')
-		len = putmem(va_arg(args, void*), flags);
+		len = putmem(va_arg(args, unsigned long long), flags);
 	if (c == 'd' || c == 'i')
 		len = ft_putnbr(va_arg(args, int), flags);
 	if (c == 'u')
 		len = ft_putnbrun(va_arg(args, unsigned int), flags);			
 	if (c == 'x')
-		hexalow(va_arg(args, int), flags);	
+		len = hexalow(va_arg(args, int), flags);	
 	if (c == 'X')
-		hexaup(va_arg(args, int), flags);	
+		len = hexaup(va_arg(args, int), flags);	
 	if (c == '%')
 		len = perc();
 	return (len);

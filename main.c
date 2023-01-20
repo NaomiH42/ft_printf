@@ -6,15 +6,14 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:08:45 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/20 15:46:46 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/20 22:04:00 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 #include <stdio.h>
-
+#include <limits.h>
 int	main(void)
 {
-	ft_printf("%s", NULL);	
-	
+	ft_printf("%08.5i", 34);
 }
