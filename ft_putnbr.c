@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:51:23 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/19 00:43:15 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/20 16:00:46 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,40 +38,50 @@ void	prnum(int n, char *flags)
 		ft_putchar(num, flags, 0);
 	}
 }
-/*
-int	is_in(char c, char *flags)
-{
-	size_t	i;
 
-	i = 0;
-	while (flags[i])
+int	numlen(int n)
+{
+	int	len;
+
+	len = 0;
+	if (n < 0)
+		len++;
+	while (n != 0)
 	{
-		if (flags[i] == c)
-			return (1);
-		i++;
+		len++;
+		n = n / 10;
 	}
-	return (0);
+	return (len);
 }
 
-int	count(char *flags, size_t i)
+size_t	ft_putnbr(int n, char *flags)
 {
-	size_t	i;
-	
-	i = 0;
-	while (flags[i])
+	int	after;
+	int	before;
+	int	dots;
+	int	ret;
+
+	ret = numlen(n);
+	after = minus(flags) - numlen(n);
+	before = space(flags) - numlen(n);
+	dots = dot(flags) - numlen(n);
+	if (is_in('+', flags) && n >= 0)
+		ret += ft_putchar('+', flags, 0);
+	else if (is_in(' ', flags) && n >= 0)
+		ret += ft_putchar(' ', flags, 0);
+	else if (before > 0)
+		ret += put_space(before);
+	else if (is_in('.', flags) && dots > 0)
 	{
-		
+		if (n < 0)
+		{
+			ft_putchar('-', flags, 0);
+			n = n * -1;
+		}
+		ret += put_zero(dots);
 	}
-}
-*/
-void	ft_putnbr(int n, char *flags)
-{
 	prnum(n, flags);
-	//size_t	i;
-
-	//i = 0;
-	//if (flags[0] >= '1' && flags[0] <= '9')
-	//{
-
-	//}
+	if (!is_in('+', flags) && !is_in(' ', flags) && !is_in('.', flags) && after > 0)
+		ret += put_space(after);
+	return (ret);
 }
