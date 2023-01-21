@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:51:23 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/21 14:48:04 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/22 00:14:28 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,12 @@ size_t	ft_putnbr(int n, char *flags)
 	{
 		ret = ft_putstr("", flags, 1);
 		return (ret);
-	}	
+	}
 	if (before > 0)
 	{
 		if (n < 0 && dots > 0)
+			before--;
+		if (n < 0 && (dot(flags) - numlen(n) == 0))
 			before--;
 		if (dots > 0)
 			before -= dots;
@@ -99,18 +101,10 @@ size_t	ft_putnbr(int n, char *flags)
 		ret += ft_putchar('+', flags, 0);
 	else if (is_in(' ', flags) && n >= 0)
 		ret += ft_putchar(' ', flags, 0);
-//	else if (before > 0)
-//	{
-//		if (n < 0 && dots > 0)
-//			before--;
-//		if (dots > 0)
-//			before -= dots;
-//		ret += put_space(before);
-//	}
 	if (dots == 0 && numlen(n) != 0 && n < 0)
 	{
 		ft_putchar('-', flags, 0);
-		ft_putchar('0', flags, 0);
+		ret += ft_putchar('0', flags, 0);
 		n *= -1;
 	}
 	if (is_in('.', flags) && dots > 0)

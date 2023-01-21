@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:49:59 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/20 21:09:25 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/22 00:08:50 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ static size_t	check_per(char c,  va_list args, char *flags)
 	if (c == 'u')
 		len = ft_putnbrun(va_arg(args, unsigned int), flags);			
 	if (c == 'x')
-		len = hexalow(va_arg(args, int), flags);	
+		len = hexalow(va_arg(args, unsigned int), flags);	
 	if (c == 'X')
-		len = hexaup(va_arg(args, int), flags);	
+		len = hexaup(va_arg(args, unsigned int), flags);	
 	if (c == '%')
 		len = perc();
 	return (len);

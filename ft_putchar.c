@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:51:14 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/20 15:57:20 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/21 23:52:34 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 size_t	ft_putchar(char c, char *flags, int test)
 {
-	int	before;
-	int	after;
+	int		before;
+	int		after;
 	size_t	ret;
 
 	ret = 0;
@@ -31,8 +31,7 @@ size_t	ft_putchar(char c, char *flags, int test)
 	if (test == 1)
 	{
 		if (after > 0)
-			ret = put_space(after);
+			ret += put_space(after);
 	}
 	return (ret);
 }
-
