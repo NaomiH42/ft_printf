@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:01:56 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/20 21:26:57 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/21 14:49:59 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ size_t	ptrlen(uintptr_t nbr)
 
 	len = 2;
 	if (!nbr)
-		return (6);
+		return (5);
 	while (nbr != 0)
 	{
 		nbr = nbr / 16;
@@ -55,42 +55,59 @@ size_t	ptrlen(uintptr_t nbr)
 }
 #include <stdio.h>
 
-size_t	putmem(unsigned long long ptr, char *flags)
+size_t	putmem(unsigned long long n, char *flags)
 {
-	int	flag;
-	int	spaces;
-	int	i;
-	char	space;
-	size_t	ret;
+	int	after;
+	int	before;
+	int	dots;
+	int	ret;
+	int	zeros;
 
-	ret = 0;
-	flag = 0;
-	spaces = 0;
-	i = 0;
-	while (flags[i])
+	ret = ptrlen(n);
+	after = minus(flags) - ptrlen(n);
+	before = space(flags) - ptrlen(n);
+	dots = dot(flags) - ptrlen(n);
+	zeros = zero(flags) - ptrlen(n);
+
+	if (is_in('.', flags) && n == 0 && dots < 0)
 	{
-                if (flags[i] >= '0' && flags[i] <= '9')
-                        spaces = (spaces * 10) + flags[i] - '0';
-                i++;
-        }
-	if (!ptr)
-		spaces -= 5;
-	else
-		spaces -= 14;
-	if (spaces > 0)
-		ret = spaces;
-	ret = ptrlen(ptr);
-	if (flags[0] == '-')
+		ret = ft_putstr("", flags, 1);
+		return (ret);
+	}	
+	if (before > 0)
 	{
-		show_adr(ptr, flags);
-		flag = 1;
+		if (dots > 0)
+			before -= dots;
+		zeros -= before;
+		ret += put_space(before);
 	}
-	while (spaces > 0)
+	if (flags[0] == '0' && zeros > 0)
 	{
-		write(1, &space, 1);
-		spaces--;
+		dots = 0;
+		ret += put_zero(zeros);
 	}
-	if (flag == 0)
-		show_adr(ptr, flags);
+	else if (is_in('+', flags))
+		ret += ft_putchar('+', flags, 0);
+	else if (is_in(' ', flags) && n == 0)
+		ret += ft_putchar(' ', flags, 0);
+//	else if (before > 0)
+//	{
+//		if (n < 0 && dots > 0)
+//			before--;
+//		if (dots > 0)
+//			before -= dots;
+//		ret += put_space(before);
+//	}
+	if (is_in('.', flags) && dots > 0)
+	{
+		ret += put_zero(dots);
+	}
+	show_adr(n, flags);
+	if (!is_in('+', flags) && !is_in(' ', flags) && after > 0)
+	{
+		if (dots > 0)
+			after -= dots;
+		ret += put_space(after);
+	}
 	return (ret);
 }

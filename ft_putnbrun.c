@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:56:35 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/20 20:45:19 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/21 14:27:45 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,55 @@ size_t	ft_putnbrun(unsigned int n, char *flags)
 	int	after;
 	int	before;
 	int	dots;
-	size_t	ret;
+	int	ret;
+	int	zeros;
 
 	ret = numlenun(n);
 	after = minus(flags) - numlenun(n);
 	before = space(flags) - numlenun(n);
 	dots = dot(flags) - numlenun(n);
-	if (is_in('+', flags))
-		ret +=	ft_putchar('+', flags, 0);
+	zeros = zero(flags) - numlenun(n);
+
+	if (is_in('.', flags) && n == 0 && dots < 0)
+	{
+		ret = ft_putstr("", flags, 1);
+		return (ret);
+	}	
+	if (before > 0)
+	{
+		if (dots > 0)
+			before -= dots;
+		zeros -= before;
+		if (before > 0)
+			ret += put_space(before);
+	}
+	if (flags[0] == '0' && zeros > 0)
+	{
+		dots = 0;
+		ret += put_zero(zeros);
+	}
+	else if (is_in('+', flags))
+		ret += ft_putchar('+', flags, 0);
 	else if (is_in(' ', flags))
-		ret +=ft_putchar(' ', flags, 0);
-	else if (before > 0)
-		ret += put_space(before);
-	else if (is_in('.', flags) && dots > 0)
+		ret += ft_putchar(' ', flags, 0);
+//	else if (before > 0)
+//	{
+//		if (n < 0 && dots > 0)
+//			before--;
+//		if (dots > 0)
+//			before -= dots;
+//		ret += put_space(before);
+//	}
+	if (is_in('.', flags) && dots > 0)
 	{
 		ret += put_zero(dots);
 	}
 	prnumun(n, flags);
-	if (!is_in('+', flags) && !is_in(' ', flags) && !is_in('.', flags) && after > 0)
+	if (!is_in('+', flags) && !is_in(' ', flags) && after > 0)
+	{
+		if (dots > 0)
+			after -= dots;
 		ret += put_space(after);
+	}
 	return (ret);
 }

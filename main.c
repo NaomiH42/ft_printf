@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 12:08:45 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/20 22:04:00 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/21 14:51:05 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 #include <limits.h>
 int	main(void)
 {
-	ft_printf("%08.5i", 34);
+	ft_printf("%x\n", -0x1234abcdu);
+	printf("%x", -0x1234abcdu);
 }

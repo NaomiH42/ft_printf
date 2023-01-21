@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 12:16:02 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/20 20:29:47 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/21 14:32:12 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,72 @@ void	hexalowprint(int nbr, char *flags)
 		ft_putchar(nbr - 10 + 'a', flags, 0);
 }
 
-size_t	hexalow(int nbr, char *flags)
+size_t	hexalow(int n, char *flags)
 {
-	size_t	len;
+	int	after;
+	int	before;
+	int	dots;
+	int	ret;
+	int	zeros;
 
-	len = hexalowlen(nbr);
-	hexalowprint(nbr, flags);
-	return (len);
+	ret = hexalowlen(n);
+	after = minus(flags) - hexalowlen(n);
+	before = space(flags) - hexalowlen(n);
+	dots = dot(flags) - hexalowlen(n);
+	zeros = zero(flags) - hexalowlen(n);
+
+	if (is_in('.', flags) && n == 0 && dots < 0)
+	{
+		ret = ft_putstr("", flags, 1);
+		return (ret);
+	}	
+	if (before > 0)
+	{
+		if (n < 0 && dots > 0)
+			before--;
+		if (dots > 0)
+			before -= dots;
+		zeros -= before;
+		if (before > 0)
+			ret += put_space(before);
+	}
+	if (flags[0] == '0' && zeros > 0)
+	{
+		dots = 0;
+		ret += put_zero(zeros);
+	}
+	else if (is_in('+', flags) && n >= 0)
+		ret += ft_putchar('+', flags, 0);
+	else if (is_in(' ', flags) && n >= 0)
+		ret += ft_putchar(' ', flags, 0);
+//	else if (before > 0)
+//	{
+//		if (n < 0 && dots > 0)
+//			before--;
+//		if (dots > 0)
+//			before -= dots;
+//		ret += put_space(before);
+//	}
+	if (is_in('.', flags) && dots > 0)
+	{
+		if (n < 0)
+		{
+			ft_putchar('-', flags, 0);
+			n = n * -1;
+			ret += put_zero(dots + 1);
+			dots++;
+		}
+		else
+			ret += put_zero(dots);
+	}
+	hexalowprint(n, flags);
+	if (!is_in('+', flags) && !is_in(' ', flags) && after > 0)
+	{
+		if (n < 0 && dots > 0)
+			after--;
+		if (dots > 0)
+			after -= dots;
+		ret += put_space(after);
+	}
+	return (ret);
 }
