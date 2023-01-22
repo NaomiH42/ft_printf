@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 int	is_in(char c, char *flags)
 {
@@ -30,7 +29,7 @@ int	is_in(char c, char *flags)
 size_t	dot(char *flags)
 {
 	size_t	i;
-	int	res;
+	int		res;
 
 	res = 0;
 	i = 0;
@@ -57,7 +56,7 @@ size_t	dot(char *flags)
 size_t	zero(char *flags)
 {
 	size_t	i;
-	int	res;
+	int		res;
 
 	res = 0;
 	i = 0;
@@ -75,85 +74,55 @@ size_t	zero(char *flags)
 	return (res);
 }
 
-size_t  minus(char *flags)
+size_t	minus(char *flags)
 {
-        size_t  i;
-        int     res;
+	size_t	i;
+	int		res;
 
-        res = 0;
-        i = 0;
-        if (!flags)
-                return (0);
-        while (flags[i])
-        {
-                if (flags[i] == '-' && flags[i + 1])
-                {
-                        i++;
-                        while (flags[i] >= '0' && flags[i] <= '9')
-                        {
-                                res = (res * 10) + flags[i] - '0';
-                                i++;
-                        }
-                }
-		if (flags[i])
+	res = 0;
+	i = 0;
+	if (!flags)
+		return (0);
+	while (flags[i])
+	{
+		if (flags[i] == '-' && flags[i + 1])
+		{
 			i++;
-        }
+			while (flags[i] >= '0' && flags[i] <= '9')
+			{
+				res = (res * 10) + flags[i] - '0';
+				i++;
+			}
+		}
+		if (flags[i])
+		i++;
+	}
 	return (res);
 }
 
-size_t  space(char *flags)
-{       
-        size_t  i;
-        int     res;
+size_t	space(char *flags)
+{
+	size_t	i;
+	int		res;
 
-        res = 0;
-        i = 0;
-        if (!flags)
-                return (0);
-        while (flags[i])
-        {
-                if ((flags[0] >= '0' && flags[0] <= '9') || flags[0] == ' ')
-                {
-                        while ((flags[i] >= '0' && flags[i] <= '9'))
-                        {
-                                res = (res * 10) + flags[i] - '0';
-                                i++;
-                        }
-			break;
-                }
+	res = 0;
+	i = 0;
+	if (!flags)
+		return (0);
+	while (flags[i])
+	{
+		if ((flags[0] >= '0' && flags[0] <= '9') || flags[0] == ' ')
+		{
+			while ((flags[i] >= '0' && flags[i] <= '9'))
+			{
+				res = (res * 10) + flags[i] - '0';
+				i++;
+			}
+			break ;
+		}
 		i++;
-        }
+	}
 	if (!is_in('.', flags) && flags[0] == '0')
 		return (0);
 	return (res);
-}
-
-size_t	put_space(size_t n)
-{
-	size_t	i;
-	char	space;
-
-	space = ' ';
-	i = 0;
-	while (i < n)
-	{
-		write(1, &space, 1);
-		i++;
-	}
-	return (i);
-}
-
-size_t	put_zero(size_t n)
-{
-	size_t	i;
-	char	zero;
-
-	zero = '0';
-	i = 0;
-	while (i < n)
-	{
-		write(1, &zero, 1);
-		i++;
-	}
-	return (i);
 }

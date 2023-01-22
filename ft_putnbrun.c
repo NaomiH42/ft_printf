@@ -6,13 +6,13 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:56:35 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/21 14:27:45 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/22 18:00:49 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	prnumun(unsigned int n, char *flags)
+static void	prnumun(unsigned int n, char *flags)
 {
 	char	num;
 
@@ -28,75 +28,45 @@ void	prnumun(unsigned int n, char *flags)
 	}
 }
 
-int	numlenun(unsigned int n)
+static t_print	*manylines(char *flags, t_print *tab)
 {
-	int	len;
-
-	len = 0;
-	if (n == 0)
-		return (1);
-	while (n != 0)
+	if (tab->before > 0)
 	{
-		len++;
-		n = n / 10;
+		if (tab->dots > 0)
+			tab->before -= tab->dots;
+		tab->zeros -= tab->before;
+		if (tab->before > 0)
+			tab->ret += put_space(tab->before);
 	}
-	return (len);
-}
-
-size_t	ft_putnbrun(unsigned int n, char *flags)
-{
-	int	after;
-	int	before;
-	int	dots;
-	int	ret;
-	int	zeros;
-
-	ret = numlenun(n);
-	after = minus(flags) - numlenun(n);
-	before = space(flags) - numlenun(n);
-	dots = dot(flags) - numlenun(n);
-	zeros = zero(flags) - numlenun(n);
-
-	if (is_in('.', flags) && n == 0 && dots < 0)
+	if (flags[0] == '0' && tab->zeros > 0)
 	{
-		ret = ft_putstr("", flags, 1);
-		return (ret);
-	}	
-	if (before > 0)
-	{
-		if (dots > 0)
-			before -= dots;
-		zeros -= before;
-		if (before > 0)
-			ret += put_space(before);
-	}
-	if (flags[0] == '0' && zeros > 0)
-	{
-		dots = 0;
-		ret += put_zero(zeros);
+		tab->dots = 0;
+		tab->ret += put_zero(tab->zeros);
 	}
 	else if (is_in('+', flags))
-		ret += ft_putchar('+', flags, 0);
+		tab->ret += ft_putchar('+', flags, 0);
 	else if (is_in(' ', flags))
-		ret += ft_putchar(' ', flags, 0);
-//	else if (before > 0)
-//	{
-//		if (n < 0 && dots > 0)
-//			before--;
-//		if (dots > 0)
-//			before -= dots;
-//		ret += put_space(before);
-//	}
-	if (is_in('.', flags) && dots > 0)
+		tab->ret += ft_putchar(' ', flags, 0);
+	return (tab);
+}
+
+size_t	ft_putnbrun(unsigned int n, char *flags, t_print *tab)
+{
+	in_flagsun(tab, flags, n);
+	if (is_in('.', flags) && tab->un == 0 && tab->dots < 0)
 	{
-		ret += put_zero(dots);
+		tab->ret = ft_putstr("", flags, 1);
+		return (tab->ret);
 	}
-	prnumun(n, flags);
-	if (!is_in('+', flags) && !is_in(' ', flags) && after > 0)
+	manylines(flags, tab);
+	if (is_in('.', flags) && tab->dots > 0)
+		tab->ret += put_zero(tab->dots);
+	prnumun(tab->un, flags);
+	if (!is_in('+', flags) && !is_in(' ', flags) && tab->after > 0)
 	{
-		if (dots > 0)
-			after -= dots;
-		ret += put_space(after);
+		if (tab->dots > 0)
+			tab->after -= tab->dots;
+		tab->ret += put_space(tab->after);
 	}
-	return (ret);
+	return (tab->ret);
 }

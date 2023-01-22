@@ -6,13 +6,13 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:51:23 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/22 00:14:28 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/22 17:59:17 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	prnum(int n, char *flags)
+static void	prnum(int n, char *flags)
 {
 	char	num;
 
@@ -39,94 +39,85 @@ void	prnum(int n, char *flags)
 	}
 }
 
-int	numlen(int n)
+static size_t	zero_add(int n, char *flags, int zeros)
 {
-	int	len;
-
-	len = 0;
-	if (n == 0)
-		return (1);
-	if (n < 0)
-		len++;
-	while (n != 0)
-	{
-		len++;
-		n = n / 10;
-	}
-	return (len);
-}
-#include <stdio.h>
-
-size_t	ft_putnbr(int n, char *flags)
-{
-	int	after;
-	int	before;
-	int	dots;
 	int	ret;
-	int	zeros;
 
-	ret = numlen(n);
-	after = minus(flags) - numlen(n);
-	before = space(flags) - numlen(n);
-	dots = dot(flags) - numlen(n);
-	zeros = zero(flags) - numlen(n);
-	if (is_in('.', flags) && n == 0 && dots < 0)
-	{
-		ret = ft_putstr("", flags, 1);
-		return (ret);
-	}
-	if (before > 0)
-	{
-		if (n < 0 && dots > 0)
-			before--;
-		if (n < 0 && (dot(flags) - numlen(n) == 0))
-			before--;
-		if (dots > 0)
-			before -= dots;
-		zeros -= before;
-		if (before > 0)
-			ret += put_space(before);
-	}
+	ret = 0;
 	if (flags[0] == '0' && zeros > 0)
 	{
-		if(n < 0)
+		if (n < 0)
 		{
 			ft_putchar('-', flags, 0);
 			n *= -1;
 		}
-		dots = 0;
 		ret += put_zero(zeros);
 	}
 	else if (is_in('+', flags) && n >= 0)
 		ret += ft_putchar('+', flags, 0);
 	else if (is_in(' ', flags) && n >= 0)
 		ret += ft_putchar(' ', flags, 0);
-	if (dots == 0 && numlen(n) != 0 && n < 0)
+	return (ret);
+}
+
+static t_print	*something(int n, char *flags, t_print *tab)
+{
+	if (tab->before > 0)
+	{
+		if (tab->n < 0 && tab->dots > 0)
+			tab->before--;
+		if (tab->n < 0 && (dot(flags) - numlen(n) == 0))
+			tab->before--;
+		if (tab->dots > 0)
+			tab->before -= tab->dots;
+		tab->zeros -= tab->before;
+		if (tab->before > 0)
+			tab->ret += put_space(tab->before);
+	}
+	tab->ret += zero_add(n, flags, tab->zeros);
+	if (flags[0] == '0' && tab->zeros > 0 && tab->n < 0)
+		tab->n *= -1;
+	if (flags[0] == '0' && tab->zeros > 0)
+		tab->dots = 0;
+	if (tab->dots == 0 && numlen(tab->n) != 0 && tab->n < 0)
 	{
 		ft_putchar('-', flags, 0);
-		ret += ft_putchar('0', flags, 0);
-		n *= -1;
+		tab->ret += ft_putchar('0', flags, 0);
+		tab->n *= -1;
 	}
-	if (is_in('.', flags) && dots > 0)
+	return (tab);
+}
+
+static t_print	*toolong(int n, char *flags, t_print *tab)
+{
+	if (tab->n < 0)
 	{
-		if (n < 0)
-		{
-			ft_putchar('-', flags, 0);
-			n = n * -1;
-			ret += put_zero(dots + 1);
-			dots++;
-		}
-		else
-			ret += put_zero(dots);
+		ft_putchar('-', flags, 0);
+		tab->n = n * -1;
+		tab->ret += put_zero(tab->dots + 1);
+		tab->dots++;
 	}
-	prnum(n, flags);
-	if (!is_in('+', flags) && !is_in(' ', flags) && after > 0)
+	else
+		tab->ret += put_zero(tab->dots);
+	return (tab);
+}
+
+size_t	ft_putnbr(int n, char *flags, t_print *tab)
+{
+	in_flags(tab, flags, n);
+	if (is_in('.', flags) && tab->n == 0 && tab->dots < 0)
+		return (ft_putstr("", flags, 1));
+	something(n, flags, tab);
+	if (is_in('.', flags) && tab->dots > 0)
+		toolong(n, flags, tab);
+	prnum(tab->n, flags);
+	if (!is_in('+', flags) && !is_in(' ', flags) && tab->after > 0)
 	{
-		if (n < 0 && dots > 0)
-			after--;
-		if (dots > 0)
-			after -= dots;
-		ret += put_space(after);
+		if (tab->n < 0 && tab->dots > 0)
+			tab->after--;
+		if (tab->dots > 0)
+			tab->after -= tab->dots;
+		tab->ret += put_space(tab->after);
 	}
-	return (ret);
+	return (tab->ret);
 }

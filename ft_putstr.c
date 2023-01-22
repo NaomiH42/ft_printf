@@ -6,13 +6,13 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 16:51:29 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/22 00:00:51 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/22 18:00:07 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	middle(char *flags)
+static int	middle(char *flags)
 {
 	size_t	i;
 	int		dotcheck;
@@ -31,7 +31,7 @@ int	middle(char *flags)
 		return (0);
 }
 
-size_t	nul(char *flags)
+static size_t	nul(char *flags)
 {
 	if (middle(flags))
 		return (ft_putstr("", flags, 1));
@@ -41,7 +41,7 @@ size_t	nul(char *flags)
 		return (ft_putstr("(null)", flags, 1));
 }
 
-size_t	putstr_space(char *flags)
+static size_t	putstr_space(char *flags)
 {
 	int	spaces;
 	int	spaces2;
@@ -60,7 +60,7 @@ size_t	putstr_space(char *flags)
 	}
 }
 
-int	put_str(char *s, int length, int test, int after)
+static int	put_str(char *s, int length, int test, int after)
 {
 	int	ret;
 

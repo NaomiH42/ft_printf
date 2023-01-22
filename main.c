@@ -5,16 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/18 12:08:45 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/22 00:02:30 by ehasalu          ###   ########.fr       */
+/*   Created: 2023/01/22 14:00:51 by ehasalu           #+#    #+#             */
+/*   Updated: 2023/01/22 17:55:09 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
 #include <stdio.h>
-#include <limits.h>
+#include "ft_printf.h"
+
 int	main(void)
 {
-	printf("%d", ft_printf("%.2dend\n", -1));
-	printf("%.2dend", -1);
+	ft_printf("% s", "");
+	printf("% s", "");
 }
