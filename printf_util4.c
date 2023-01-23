@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 12:36:41 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/22 13:44:02 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/23 11:18:02 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,13 @@ size_t	ptrlen(uintptr_t nbr)
 		len++;
 	}
 	return (len);
+}
+
+t_ducktape *start_fcn(t_ducktape *start)
+{
+	start->total = 0;
+	start->flags = NULL;
+	start->len = 0;
+	start->l = 0;
+	return (start);
 }

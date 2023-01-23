@@ -6,7 +6,7 @@
 /*   By: ehasalu <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 10:50:49 by ehasalu           #+#    #+#             */
-/*   Updated: 2023/01/22 13:54:28 by ehasalu          ###   ########.fr       */
+/*   Updated: 2023/01/23 11:18:36 by ehasalu          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@
 # include <stdint.h>
 # include <stddef.h>
 
+typedef struct s_ducktape
+{
+	size_t	total;
+	char *flags;
+	int	len;
+	size_t	l;
+}	t_ducktape;
+
 typedef struct s_print
 {
 	unsigned long long	mem;
@@ -30,6 +38,8 @@ typedef struct s_print
 	int					zeros;
 	int					n;
 }	t_print;
+
+t_ducktape *start_fcn(t_ducktape *start);
 
 t_print	*in_flagsmem(t_print *tab, char *flags, unsigned long long nbr);
 t_print	*in_flagshex(t_print *tab, char *flags, unsigned int nbr);
